@@ -1,5 +1,6 @@
 import Pagination from "@/components/Pagination";
 import Search from "@/components/Search";
+import { deleteUser } from "@/lib/actions";
 import { fetchUsers } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,9 +53,12 @@ const Page = async ({searchParams}) => {
                       Ver
                     </button>
                   </Link>
+                  <form action={deleteUser}>
+                    <input type="hidden" name="id" value={user.id}/>
                   <button className="py-1 px-2 rounded-md border-none cursor-pointer bg-red-600 hover:bg-red-600/50">
                     Excluir
                   </button>
+                  </form>
                 </div>
               </td>
             </tr>

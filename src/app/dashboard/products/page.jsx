@@ -4,8 +4,9 @@ import Link from "next/link";
 import { FaShirt } from "react-icons/fa6";
 import { searchParams } from "next/navigation";
 import { fetchProducts } from "@/lib/data";
+import { deleteProduct } from "@/lib/actions";
 
-const Page = async ({searchParams}) => {
+const Page = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
@@ -42,7 +43,7 @@ const Page = async ({searchParams}) => {
               </td>
               <td>{product.desc}</td>
               <td>{product.price}</td>
-              <td>{product.createdAt?.toString().splice(4, 16)}</td>
+              <td>{product.createdAt?.toString().slice(4, 16)}</td>
               <td>{product.stock}</td>
               <td>
                 <div className="flex gap-2">
@@ -51,16 +52,23 @@ const Page = async ({searchParams}) => {
                       Ver
                     </button>
                   </Link>
-                  <button className="py-1 px-2 rounded-md border-none cursor-pointer bg-red-600 hover:bg-red-600/50">
-                    Excluir
-                  </button>
+                  <form action={deleteProduct}>
+                    <input 
+                      name="id" 
+                      type="hidden" 
+                      value={product.id} 
+                    />
+                    <button className="py-1 px-2 rounded-md border-none cursor-pointer bg-red-600 hover:bg-red-600/50">
+                      Excluir
+                    </button>
+                  </form>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Pagination count={count}/>
+      <Pagination count={count} />
     </div>
   );
 };

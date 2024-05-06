@@ -1,7 +1,13 @@
 const Page = () => {
+
+    const handleForm = async() => {
+        "use server"
+
+    }
+
     return(
         <div>
-            <form action=""></form>
+            <form action={handleForm}></form>
         </div>
     )
 }

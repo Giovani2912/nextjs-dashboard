@@ -1,38 +1,65 @@
-import { connectToDB } from "@/app/utils/utils";
 import { Product, User } from "./models";
+import { connectToDB } from "./utils";
 
+// Fetch all users
 export const fetchUsers = async (q, page) => {
   const regex = new RegExp(q, "i");
 
-  const ITEM_PER_PAGE = 1;
+  const ITEM_PER_PAGE = 10;
+
   try {
     connectToDB();
-    const count = await User.find({ username: { $regex: regex } }).count()
+    const count = await User.find({ username: { $regex: regex } }).count();
     const users = await User.find({ username: { $regex: regex } })
       .limit(ITEM_PER_PAGE)
       .skip(ITEM_PER_PAGE * (page - 1));
-    return {count, users};
+    return { count, users };
   } catch (err) {
     console.log(err);
-    throw new Error("Failed do fetch users!");
+    throw new Error("Failed to fetch users!");
   }
 };
 
-
-export const fetchProducts = async (q, page) => {
-  const regex = new RegExp(q, "i");
-
-  const ITEM_PER_PAGE = 1;
+// Fetch single user
+export const fetchUser = async (id) => {
   try {
     connectToDB();
-    const count = await Product.find({ title: { $regex: regex } }).count()
+    const user = await User.findById(id);
+    console.log('myUser', user);
+    return user;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// Fetch all products
+export const fetchProducts = async (q, page) => {
+  console.log(q);
+  const regex = new RegExp(q, "i");
+
+  const ITEM_PER_PAGE = 10;
+
+  try {
+    connectToDB();
+    const count = await Product.find({ title: { $regex: regex } }).count();
     const products = await Product.find({ title: { $regex: regex } })
       .limit(ITEM_PER_PAGE)
       .skip(ITEM_PER_PAGE * (page - 1));
-    return {count, products};
+    return { count, products };
   } catch (err) {
     console.log(err);
-    throw new Error("Failed do fetch products!");
+    throw new Error("Failed to fetch products!");
   }
+};
 
+// Fetch single product
+export const fetchProduct = async (id) => {
+  try {
+    connectToDB();
+    const product = await Product.findById(id);
+    return product;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch product!");
+  }
 };
